@@ -23,6 +23,8 @@ public class RegistroController {
         return service.registrarEntrada(req);
     }
 
+    // ----- por id de registro -----
+
     @PostMapping("/{id}/salida")
     public RegistroResponse salida(@PathVariable Long id) {
         return service.registrarSalida(id);
@@ -36,6 +38,23 @@ public class RegistroController {
     @GetMapping("/{id}")
     public RegistroResponse obtener(@PathVariable Long id) {
         return service.obtener(id);
+    }
+
+    // ----- por placa (registro activo) -----
+
+    @PostMapping("/placa/{placa}/salida")
+    public RegistroResponse salidaPorPlaca(@PathVariable String placa) {
+        return service.registrarSalidaPorPlaca(placa);
+    }
+
+    @GetMapping("/placa/{placa}/cobro")
+    public RegistroResponse cobroPorPlaca(@PathVariable String placa) {
+        return service.consultarCobroPorPlaca(placa);
+    }
+
+    @GetMapping("/placa/{placa}")
+    public RegistroResponse activoPorPlaca(@PathVariable String placa) {
+        return service.obtenerActivoPorPlaca(placa);
     }
 
     @GetMapping

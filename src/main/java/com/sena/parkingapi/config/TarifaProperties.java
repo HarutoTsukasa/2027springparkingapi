@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Tarifas en pesos (COP) por tipo de vehiculo. Se leen de application.properties. */
+/**
+ * Valores INICIALES de tarifa (pesos COP). Solo se usan para sembrar la tabla "tarifas"
+ * cuando un tipo de vehiculo no tiene tarifa vigente. Despues se administran por /api/tarifas.
+ */
 @Getter
 @Setter
 @Component

@@ -13,7 +13,9 @@ import java.util.Optional;
 
 public interface EspacioParqueoRepository extends JpaRepository<EspacioParqueo, Long> {
 
-    boolean existsByNumero(Integer numero);
+    // @Query explicito: las consultas derivadas "exists" buscan una propiedad llamada "id" y la entidad usa id_espacio.
+    @Query("select count(e) > 0 from EspacioParqueo e where e.numero = :numero")
+    boolean existsByNumero(@Param("numero") Integer numero);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<EspacioParqueo> findFirstByTipoAndEstadoOrderByNumeroAsc(TipoVehiculo tipo, EstadoEspacio estado);

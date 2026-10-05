@@ -13,9 +13,14 @@ import java.util.Optional;
 
 public interface RegistroParqueoRepository extends JpaRepository<RegistroParqueo, Long> {
 
-    boolean existsByVehiculoPlacaAndFechaSalidaIsNull(String placa);
+    // @Query explicito: las consultas derivadas "exists" buscan una propiedad llamada "id" y la entidad usa id_registro.
+    @Query("select count(r) > 0 from RegistroParqueo r join r.vehiculo v where v.placa = :placa and r.fechaSalida is null")
+    boolean existsByVehiculoPlacaAndFechaSalidaIsNull(@Param("placa") String placa);
 
-    boolean existsByEspacio(EspacioParqueo espacio);
+    @Query("select count(r) > 0 from RegistroParqueo r where r.espacio = :espacio")
+    boolean existsByEspacio(@Param("espacio") EspacioParqueo espacio);
+
+    Optional<RegistroParqueo> findByVehiculoPlacaAndFechaSalidaIsNull(String placa);
 
     List<RegistroParqueo> findAllByOrderByFechaEntradaDesc();
 
@@ -28,4 +33,8 @@ public interface RegistroParqueoRepository extends JpaRepository<RegistroParqueo
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select r from RegistroParqueo r where r.id_registro = :id")
     Optional<RegistroParqueo> bloquearPorId(@Param("id") Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select r from RegistroParqueo r join r.vehiculo v where v.placa = :placa and r.fechaSalida is null")
+    Optional<RegistroParqueo> bloquearActivoPorPlaca(@Param("placa") String placa);
 }

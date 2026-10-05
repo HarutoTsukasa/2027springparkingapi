@@ -1,0 +1,384 @@
+{
+  "info": {
+    "name": "Parking2027 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "idRegistro",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Espacios",
+      "item": [
+        {
+          "name": "Crear espacio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 1,\n  \"tipo\": \"CARRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear lote carros 1-10",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/lote",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"desde\": 1,\n  \"hasta\": 10,\n  \"tipo\": \"CARRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear lote motos 11-15",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/lote",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"desde\": 11,\n  \"hasta\": 15,\n  \"tipo\": \"MOTO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear lote bicicletas 16-20",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/lote",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"desde\": 16,\n  \"hasta\": 20,\n  \"tipo\": \"BICICLETA\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios"
+          }
+        },
+        {
+          "name": "Listar carros libres",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios?tipo=CARRO&estado=LIBRE"
+          }
+        },
+        {
+          "name": "Obtener por id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/1"
+          }
+        },
+        {
+          "name": "Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 1,\n  \"tipo\": \"CARRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/espacios/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registros",
+      "item": [
+        {
+          "name": "Entrada carro (espacio automatico)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/entrada",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\",\n  \"tipo\": \"CARRO\",\n  \"descripcion\": \"Mazda rojo\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set('idRegistro', j.idRegistro);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Entrada moto (espacio elegido)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/entrada",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"XYZ12D\",\n  \"tipo\": \"MOTO\",\n  \"numeroEspacio\": 11\n}"
+            }
+          }
+        },
+        {
+          "name": "Entrada bicicleta sin placa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/entrada",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"BICICLETA\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Entrada duplicada (espera 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/entrada",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\",\n  \"tipo\": \"CARRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Entrada sin placa carro (espera 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/entrada",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"CARRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ver cobro actual",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/{{idRegistro}}/cobro"
+          }
+        },
+        {
+          "name": "Registrar salida",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/{{idRegistro}}/salida"
+          }
+        },
+        {
+          "name": "Salida repetida (espera 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/{{idRegistro}}/salida"
+          }
+        },
+        {
+          "name": "Obtener registro",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros/{{idRegistro}}"
+          }
+        },
+        {
+          "name": "Listar activos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros?activos=true"
+          }
+        },
+        {
+          "name": "Listar finalizados",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros?activos=false"
+          }
+        },
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/registros"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehiculos",
+      "item": [
+        {
+          "name": "Listar vehiculos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/vehiculos"
+          }
+        },
+        {
+          "name": "Historial por placa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/vehiculos/ABC123/registros"
+          }
+        }
+      ]
+    }
+  ]
+}
